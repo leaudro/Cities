@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
-    private final List<City> cities;
+    private List<City> cities;
     private final OnCityListClickListener listener;
 
     public CityAdapter(List<City> list, OnCityListClickListener listener) {
@@ -48,6 +48,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return cities.size();
+    }
+
+    public void update(List<City> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
