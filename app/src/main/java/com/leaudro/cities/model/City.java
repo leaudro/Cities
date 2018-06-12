@@ -2,10 +2,15 @@ package com.leaudro.cities.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.leaudro.cities.model.jsonadapter.CityJsonAdapter;
+
+@JsonAdapter(CityJsonAdapter.class)
 public class City implements Comparable<City> {
     public long _id;
     public String name;
     public String country;
+    public String nameLowerCase;
 
     @Override
     public String toString() {
@@ -14,7 +19,10 @@ public class City implements Comparable<City> {
 
     @Override
     public int compareTo(@NonNull City o) {
-        return name.compareTo(o.name);
+        int result = nameLowerCase.compareTo(o.nameLowerCase);
+        if (result == 0)
+            return country.compareTo(o.country);
+        else return result;
     }
 
     @Override
