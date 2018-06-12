@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.leaudro.cities.R;
 import com.leaudro.cities.model.City;
@@ -41,6 +42,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
                 }
             }
         });
+        holder.textName.setText(holder.city.toString());
     }
 
     @Override
@@ -50,11 +52,13 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View view;
+        final TextView textName;
         public City city;
 
         ViewHolder(View view) {
             super(view);
             this.view = view;
+            textName = view.findViewById(R.id.name);
         }
     }
 
