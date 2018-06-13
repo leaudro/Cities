@@ -11,6 +11,7 @@ public class City implements Comparable<City> {
     public String name;
     public String country;
     public String nameLowerCase;
+    public Location coord;
 
     @Override
     public String toString() {
