@@ -19,7 +19,14 @@ public class CityListPresenter implements CityListContract.Presenter {
     }
 
     public void fetchFullList() {
-        view.showList(dataSource.cities);
+        view.showLoading();
+        dataSource.setup(new DataSource.OnSetupComplete() {
+            @Override
+            public void onComplete() {
+                view.hideLoading();
+                view.showList(dataSource.cities);
+            }
+        });
     }
 
     @Override

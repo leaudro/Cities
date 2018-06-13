@@ -21,6 +21,7 @@ import java.util.List;
 public class CityListFragment extends Fragment implements CityListContract.View {
 
     private RecyclerView recyclerView;
+    private View loadingView;
 
     private CityListPresenter presenter;
     private CityAdapter adapter;
@@ -31,6 +32,7 @@ public class CityListFragment extends Fragment implements CityListContract.View 
         final View view = inflater.inflate(R.layout.fragment_city_list, container, false);
 
         recyclerView = view.findViewById(R.id.list);
+        loadingView = view.findViewById(R.id.loading);
         final EditText editSearch = view.findViewById(R.id.edit_search);
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -68,5 +70,15 @@ public class CityListFragment extends Fragment implements CityListContract.View 
     @Override
     public void updateList(List<City> cities) {
         adapter.update(cities);
+    }
+
+    @Override
+    public void showLoading() {
+        loadingView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingView.setVisibility(View.GONE);
     }
 }

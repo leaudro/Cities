@@ -6,12 +6,14 @@ import java.util.List;
 
 public interface CityListContract {
 
-    public interface Presenter {
-        public void fetchFullList();
-        public void filter(String s);
+    interface Presenter {
+        void fetchFullList();
+        void filter(String s);
     }
 
-    public interface View {
+    interface View {
+        void showLoading();
+        void hideLoading();
         void showList(List<City> cities);
         void updateList(List<City> cities);
     }
