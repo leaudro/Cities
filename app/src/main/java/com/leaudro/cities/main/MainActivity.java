@@ -1,8 +1,11 @@
 package com.leaudro.cities.main;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
+import com.leaudro.cities.R;
 import com.leaudro.cities.main.citydetail.CityDetailFragment;
 import com.leaudro.cities.model.City;
 
@@ -24,6 +27,21 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnCit
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setDisplayHomeAsUpEnabled(false);
+        setTitle(R.string.app_name);
+        super.onBackPressed();
+    }
+
+    @Override
     public void onListFragmentClick(City item) {
         CityDetailFragment fragment = new CityDetailFragment();
 
@@ -32,10 +50,20 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnCit
         arguments.putDouble(EXTRA_LON, item.coord.lon);
         fragment.setArguments(arguments);
 
+        setDisplayHomeAsUpEnabled(true);
+        setTitle(item.toString());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(android.R.id.content, fragment)
                 .addToBackStack("detail")
                 .commit();
+    }
+
+    private void setDisplayHomeAsUpEnabled(boolean enable) {
+        final ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(enable);
+        }
     }
 }
