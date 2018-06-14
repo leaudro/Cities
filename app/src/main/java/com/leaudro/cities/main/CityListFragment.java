@@ -26,12 +26,25 @@ public class CityListFragment extends Fragment implements CityListContract.View 
     private CityListPresenter presenter;
     private CityAdapter adapter;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
+
+        presenter = new CityListPresenter(this, new DataSource());
+        adapter = new CityAdapter(null);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_city_list, container, false);
 
         recyclerView = view.findViewById(R.id.list);
+        recyclerView.setAdapter(adapter);
+
         loadingView = view.findViewById(R.id.loading);
         final EditText editSearch = view.findViewById(R.id.edit_search);
         editSearch.addTextChangedListener(new TextWatcher() {
@@ -50,21 +63,16 @@ public class CityListFragment extends Fragment implements CityListContract.View 
 
             }
         });
+
+        if (savedInstanceState == null)
+            presenter.fetchFullList();
+
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        presenter = new CityListPresenter(this, new DataSource());
-        presenter.fetchFullList();
-    }
-
-    @Override
     public void showList(List<City> cities) {
-        adapter = new CityAdapter(cities, null);
-        recyclerView.setAdapter(adapter);
+        updateList(cities);
     }
 
     @Override

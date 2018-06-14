@@ -10,15 +10,15 @@ import android.widget.TextView;
 import com.leaudro.cities.R;
 import com.leaudro.cities.model.City;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
-    private List<City> cities;
+    private List<City> cities = Collections.emptyList();
     private final OnCityListClickListener listener;
 
-    public CityAdapter(List<City> list, OnCityListClickListener listener) {
-        cities = list;
+    public CityAdapter(OnCityListClickListener listener) {
         this.listener = listener;
     }
 
