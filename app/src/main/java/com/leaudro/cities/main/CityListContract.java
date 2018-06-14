@@ -14,7 +14,6 @@ public interface CityListContract {
     interface View {
         void showLoading();
         void hideLoading();
-        void showList(List<City> cities);
         void updateList(List<City> cities);
     }
 }

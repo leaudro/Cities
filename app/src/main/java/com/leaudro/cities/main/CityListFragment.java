@@ -71,11 +71,6 @@ public class CityListFragment extends Fragment implements CityListContract.View 
     }
 
     @Override
-    public void showList(List<City> cities) {
-        updateList(cities);
-    }
-
-    @Override
     public void updateList(List<City> cities) {
         adapter.update(cities);
     }

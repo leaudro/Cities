@@ -1,8 +1,11 @@
 package com.leaudro.cities.main;
 
+import android.support.v4.util.Pair;
+
 import com.leaudro.cities.model.City;
 import com.leaudro.cities.model.DataSource;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CityListPresenter implements CityListContract.Presenter {
@@ -24,7 +27,7 @@ public class CityListPresenter implements CityListContract.Presenter {
             @Override
             public void onComplete() {
                 view.hideLoading();
-                view.showList(dataSource.cities);
+                view.updateList(dataSource.cities);
             }
         });
     }
@@ -32,10 +35,31 @@ public class CityListPresenter implements CityListContract.Presenter {
     @Override
     public void filter(String s) {
         s = s.toLowerCase();
-        if (lastSearch.length() > 0 && s.startsWith(lastSearch)) {
-            lastResult = subList(lastResult, s);
+
+        if (s.isEmpty()) {
+            view.updateList(dataSource.cities);
+            return;
+        }
+
+        Pair<Integer, Integer> index = dataSource.indexMap.get(s);
+        if (index != null) {
+            lastResult = dataSource.cities.subList(index.first, index.second);
         } else {
-            lastResult = subList(dataSource.cities, s);
+            if (s.startsWith(lastSearch)) {
+                lastResult = subList(lastResult, s);
+            } else if (s.length() > 2) {
+                if (dataSource.indexMap.containsKey(s.substring(0, 2))) {
+                    index = dataSource.indexMap.get(s.substring(0, 2));
+                } else if (dataSource.indexMap.containsKey(s.substring(0, 1))) {
+                    index = dataSource.indexMap.get(s.substring(0, 1));
+                }
+
+                if (index != null) { //Tries to find the first two letters and goes from there
+                    lastResult = subList(dataSource.cities.subList(index.first, index.second), s);
+                } else {
+                    lastResult = Collections.emptyList();
+                }
+            }
         }
         lastSearch = s;
         view.updateList(lastResult);
