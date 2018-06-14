@@ -13,6 +13,17 @@ public class City implements Comparable<City> {
     public String nameLowerCase;
     public Location coord;
 
+    public City() {
+
+    }
+
+    public City(long _id, String name, String country) {
+        this._id = _id;
+        this.name = name;
+        this.country = country;
+        this.nameLowerCase = name.toLowerCase();
+    }
+
     @Override
     public String toString() {
         return name + ", " + country;

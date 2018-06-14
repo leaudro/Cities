@@ -35,9 +35,14 @@ public class DataSource {
 
     public HashMap<String, Pair<Integer, Integer>> indexMap;
 
-    private void createIndexMap() {
+    void createIndexMap() {
         City firstCity = cities.get(0);
-        final char[] key = {firstCity.nameLowerCase.charAt(0), firstCity.nameLowerCase.charAt(1)};
+
+        final char c;
+        if (firstCity.nameLowerCase.length() > 1)
+            c = firstCity.nameLowerCase.charAt(1);
+        else c = 0;
+        final char[] key = {firstCity.nameLowerCase.charAt(0), c};
 
         indexMap = new HashMap<>();
 
@@ -106,7 +111,6 @@ public class DataSource {
                 dataSource.cities = dataSource.getCities();
                 dataSource.createIndexMap();
             }
-
 
             return null;
         }

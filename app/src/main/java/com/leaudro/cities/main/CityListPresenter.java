@@ -45,7 +45,7 @@ public class CityListPresenter implements CityListContract.Presenter {
         if (index != null) {
             lastResult = dataSource.cities.subList(index.first, index.second);
         } else {
-            if (s.startsWith(lastSearch)) {
+            if (lastSearch.length() > 0 && s.startsWith(lastSearch)) {
                 lastResult = subList(lastResult, s);
             } else if (s.length() > 2) {
                 if (dataSource.indexMap.containsKey(s.substring(0, 2))) {
@@ -53,12 +53,12 @@ public class CityListPresenter implements CityListContract.Presenter {
                 } else if (dataSource.indexMap.containsKey(s.substring(0, 1))) {
                     index = dataSource.indexMap.get(s.substring(0, 1));
                 }
+            }
 
-                if (index != null) { //Tries to find the first two letters and goes from there
-                    lastResult = subList(dataSource.cities.subList(index.first, index.second), s);
-                } else {
-                    lastResult = Collections.emptyList();
-                }
+            if (index != null) { //Tries to find the first two letters and goes from there
+                lastResult = subList(dataSource.cities.subList(index.first, index.second), s);
+            } else {
+                lastResult = Collections.emptyList();
             }
         }
         lastSearch = s;
