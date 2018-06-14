@@ -24,6 +24,14 @@ public class DataSource {
 
     public List<City> cities = null;
 
+    /*
+    * The decision here was to use array/ArrayList, because then I don't need to worry about
+    * duplicating entries when calling subList(), I can just work with indexes and the list
+    * will be always the same, with no duplicates.
+    *
+    * When the JSON is parsed, I also create a field `nameLowerCase` to avoid calling `String.toLowerCase()`
+    * all the time when searching.
+    * */
     private List<City> getCities() {
         InputStream raw = appInstance.getResources().openRawResource(R.raw.cities);
         Reader reader = new BufferedReader(new InputStreamReader(raw));
@@ -33,8 +41,21 @@ public class DataSource {
         return list;
     }
 
+    /*
+    * This variable will hold indexes (begin and end) to all possible sublists
+    * of the first two characters on the city's list.
+    * With that, the search can be optimized when it's most critical: on the beginning.
+    * */
     public HashMap<String, Pair<Integer, Integer>> indexMap;
 
+    /*
+    * On this method we go through the whole List of cities, keeping the indexes of the first two
+    * characters of every city.
+    * At the end of this method, `indexMap` will be like this:
+    * { { "a", (0, 5) },{ "ab", (0, 2) },{ "ac", (2, 5) }, ... }
+    * the key will be the first 1 or 2 chars of a search, while the value will be a pair of indexes,
+    * representing the start/end of a sublist that matches the key search.
+    * */
     void createIndexMap() {
         City firstCity = cities.get(0);
 

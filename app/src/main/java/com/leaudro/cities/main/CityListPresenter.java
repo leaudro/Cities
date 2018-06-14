@@ -32,6 +32,25 @@ public class CityListPresenter implements CityListContract.Presenter {
         });
     }
 
+
+    /*
+    *
+    * This is where the search is made. First, it checks whether the search is empty, so it shows
+    * the full list.
+    * Then, it tries to get a pair of indexes from the `indexMap`. If it finds it, there's nothing else
+    * to do unless to show the sublist. If not:
+    *
+    * It checks if a search was already started, and if the last search made can be used as a start point.
+    * The logic behind it is that if I was looking for "Ams" and I just added a letter to search for "Amst",
+    * I should use the same sublist from my previous search because I already know that all the possible cities
+    * with "Amst" are inside the "Ams" result. And this is a very common use case, because as the user is typing,
+    * it will filter from the previous search.
+    *
+    * If a search wasn't started yet, or the user just pasted another string unrelated to the last search,
+    * the app will then restart from the beginning. It will try to get the indexes from the first two (or one)
+    * characters, and if it fails on doing that, is because there's no match.
+    *
+    * */
     @Override
     public void filter(String s) {
         s = s.toLowerCase();
