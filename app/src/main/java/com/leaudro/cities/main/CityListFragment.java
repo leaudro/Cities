@@ -34,7 +34,6 @@ public class CityListFragment extends Fragment implements CityListContract.View 
         setRetainInstance(true);
 
         presenter = new CityListPresenter(this, new DataSource());
-        adapter = new CityAdapter(null);
     }
 
     @Nullable
@@ -43,6 +42,13 @@ public class CityListFragment extends Fragment implements CityListContract.View 
         final View view = inflater.inflate(R.layout.fragment_city_list, container, false);
 
         recyclerView = view.findViewById(R.id.list);
+
+        CityAdapter.OnCityListClickListener listener = null;
+        if (getActivity() instanceof CityAdapter.OnCityListClickListener) {
+            listener = (CityAdapter.OnCityListClickListener) getActivity();
+        }
+
+        adapter = new CityAdapter(listener);
         recyclerView.setAdapter(adapter);
 
         loadingView = view.findViewById(R.id.loading);
