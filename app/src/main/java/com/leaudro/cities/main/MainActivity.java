@@ -1,9 +1,12 @@
 package com.leaudro.cities.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.leaudro.cities.R;
 import com.leaudro.cities.main.citydetail.CityDetailFragment;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnCit
 
         setDisplayHomeAsUpEnabled(true);
         setTitle(item.toString());
+        hideKeyboard();
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -64,6 +68,14 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnCit
         final ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(enable);
+        }
+    }
+
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null && (imm != null)) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }
